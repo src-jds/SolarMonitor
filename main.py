@@ -1,6 +1,8 @@
 import display
 
 def main():
-   display.init()
+    display = display()
+    display.initialiseScreen()
+    display.showText('Hello World!') 
 
 main()
