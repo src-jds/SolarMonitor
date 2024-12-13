@@ -18,19 +18,21 @@ class display:
         self.partialRefreshCount = 0
         self.refreshTimerSec = 0 
 
-    def initialiseScreen(self):
+    def init(self):
         logging.info("Initialising E-Paper display")
         self.epd = epd2in13_V4.EPD()
+        self.epd.init()
         self.epd.Clear(0xFF)
         self.image = Image.new('1', (self.epd.height, self.epd.width), 255)
         self.graphics = ImageDraw.Draw(self.image)
-        self.font = ImageFont.truetype('/pic/Font.ttc', 24)
+        self.font = ImageFont.truetype("./pic/Font.ttc", 24)
+        self.state = "initialised"
 
     def showText(self, message):
         self.message = message
-        self.graphics.text((120,90),self.message,font=font,fill = 0)
+        self.graphics.text((50,50),self.message,font=self.font,fill = 0)
         self.epd.display(self.epd.getbuffer(self.image))
-        self.image.clear()
+        #self.image.clear()
 
     def checkRefreshTimer(self):
         pass
@@ -46,3 +48,7 @@ class display:
 
     def updatePanelCurent(self, current):
         self.panelCurrent = current
+
+    def close(self):
+        self.epd.Clear(0xFF)
+        self.epd.close()
